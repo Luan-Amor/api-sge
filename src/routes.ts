@@ -6,6 +6,10 @@ import { Router } from "express";
 import { CreateVideoController } from "./controllers/CreateVideoController";
 import { GetAllVideosController } from "./controllers/GetAllVideosController";
 
+import { UserController } from "./controllers/UserController";
+
+const userController = new UserController();
+
 const routes = Router();
 
 routes.post('/categories', new CreateCategoryController().handle);
@@ -15,5 +19,11 @@ routes.put('/categories/:id', new UpdateCategoryController().handle);
 
 routes.post('/videos', new CreateVideoController().handle);
 routes.get('/videos', new GetAllVideosController().handle);
+
+routes.get('/users', userController.findUsers);
+routes.get('/users/:id', userController.findUser);
+routes.post('/users', userController.createUser);
+routes.put('/users/:id', userController.updateUser);
+routes.delete('/users/:id', userController.deleteUser);
 
 export { routes }
