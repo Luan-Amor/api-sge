@@ -39,7 +39,7 @@ export class CreateEvent1646177644657 implements MigrationInterface {
                     {
                         name: 'fk_event_user',
                         columnNames: ['owner_id'],
-                        referencedTableName: 'event',
+                        referencedTableName: 'user',
                         referencedColumnNames: ['id']
                     }
                 ]

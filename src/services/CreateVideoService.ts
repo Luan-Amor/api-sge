@@ -14,8 +14,6 @@ export class CreateVideoService {
         const repo = getRepository(Video);
         const repoCategory = getRepository(Category);
 
-        console.log(category_id)
-
         if(!await repoCategory.findOne(category_id)){
             return new Error('Category does not exists.')
         }
