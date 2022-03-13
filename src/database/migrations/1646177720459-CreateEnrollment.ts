@@ -16,9 +16,9 @@ export class CreateEnrollment1646177720459 implements MigrationInterface {
                         type: 'uuid'
                     },
                     {
-                        name: 'enrolled',
-                        type: 'varchar',
-                        length: '1'
+                        name: 'paid',
+                        type: 'boolean',
+                        default: false
                     },
                     {
                         name: 'created_at',
