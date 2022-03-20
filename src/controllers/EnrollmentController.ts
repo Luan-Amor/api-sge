@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { RepositoryNotTreeError } from "typeorm";
 import { EnrollmentService } from "../services/EnrollmentService";
 
 export class EnrollmentController {
