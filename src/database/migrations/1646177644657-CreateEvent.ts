@@ -22,7 +22,15 @@ export class CreateEvent1646177644657 implements MigrationInterface {
                         type: 'varchar',
                     },
                     {
+                        name: 'speaker',
+                        type: 'varchar',
+                    },
+                    {
                         name: 'ticket_price',
+                        type: 'numeric',
+                    },
+                    {
+                        name: 'spots',
                         type: 'numeric',
                     },
                     {
@@ -30,9 +38,21 @@ export class CreateEvent1646177644657 implements MigrationInterface {
                         type: 'uuid',
                     },
                     {
+                        name: 'start_event_date',
+                        type: 'timestamp'
+                    },
+                    {
+                        name: 'end_event_date',
+                        type: 'timestamp'
+                    },
+                    {
                         name: 'created_at',
                         type: 'timestamp',
                         default: 'now()'
+                    },
+                    {
+                        name: 'deleted_at',
+                        type: 'timestamp'
                     }
                 ],
                 foreignKeys: [

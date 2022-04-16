@@ -1,8 +1,8 @@
-import { Entity, Column, CreateDateColumn, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from 'uuid';
 
-@Entity('categories')
-export class Category {
+@Entity('video')
+export class Video {
 
     @PrimaryColumn()
     id: string;
@@ -12,9 +12,9 @@ export class Category {
 
     @Column()
     description: string;
-
-    @CreateDateColumn()
-    created_at: Date;
+    
+    @Column()
+    url: string;
 
     constructor(){
         if(!this.id){

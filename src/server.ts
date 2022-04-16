@@ -2,13 +2,15 @@ import "reflect-metadata";
 import express from 'express';
 import './database';
 import { routes } from "./routes";
+import cors from 'cors'
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3333;
 
 app.use(express.json());
+app.use(cors());
 
 app.use(routes);
 
-app.listen(3000, ()=> console.log(`Server ir running on port ${PORT}`));
+app.listen(PORT, ()=> console.log(`Server ir running on port ${PORT}`));
 

@@ -6,7 +6,7 @@ type CreateEventRequest  = {
     name: string;
     description: string;
     ticket_price: number;
-    owner_id: string;
+    owner_id: any;
 }
 type UpdateEventRequest  = {
     id: string;

@@ -15,9 +15,24 @@ export class User {
     
     @Column()
     password: string;
+
+    @Column()
+    gender: string;
+
+    @Column()
+    state: string;
+    
+    @Column()
+    city: string;
+
+    @Column()
+    perfil: string = 'COMUM';
     
     @CreateDateColumn()
     created_at: Date;
+
+    @CreateDateColumn()
+    deleted_at: Date;
 
     constructor(){
         if(!this.id){

@@ -1,44 +1,35 @@
-import { CreateCategoryController } from "./controllers/CreateCategoryController";
-import { GetAllCategoryController } from "./controllers/GetAllCategoriesController";
-import { DeleteCategoryController } from "./controllers/DeleteCategoriesController";
-import { UpdateCategoryController } from "./controllers/UpdateCategoriesController";
 import { Router } from "express";
-import { CreateVideoController } from "./controllers/CreateVideoController";
-import { GetAllVideosController } from "./controllers/GetAllVideosController";
 
 import { UserController } from "./controllers/UserController";
 import { EventController } from "./controllers/EventController";
 import { EnrollmentController } from "./controllers/EnrollmentController";
+import { AuthenticationController } from "./controllers/AuthenticationController";
+import { JwtUtil } from './config/JwtUtil';
 
 const userController = new UserController();
 const eventControler = new EventController();
 const enrollmentController = new EnrollmentController();
+const authenticationController = new AuthenticationController();
 
 const routes = Router();
 
-routes.post('/categories', new CreateCategoryController().handle);
-routes.get('/categories', new GetAllCategoryController().handle);
-routes.delete('/categories/:id', new DeleteCategoryController().handle);
-routes.put('/categories/:id', new UpdateCategoryController().handle);
-
-routes.post('/videos', new CreateVideoController().handle);
-routes.get('/videos', new GetAllVideosController().handle);
-
-// User
-routes.get('/users', userController.findUsers);
-routes.get('/users/:id', userController.findUser);
-routes.post('/users', userController.createUser);
-routes.put('/users/:id', userController.updateUser);
-routes.delete('/users/:id', userController.deleteUser);
-// Events
-routes.get('/events', eventControler.findAll);
-routes.get('/events/:id', eventControler.findOne);
-routes.post('/events', eventControler.create);
-routes.put('/events', eventControler.update);
-routes.delete('/events/:id', eventControler.delete);
-// Enrollment 
-routes.get('/enrollment/', enrollmentController.getEnrollment);
-routes.get('/enrollment/:id', enrollmentController.getUserEnrolls);
-routes.post('/enrollment', enrollmentController.enroll);
+    //Login
+    routes.post('/login', authenticationController.login)
+    // User
+    .get('/users', userController.findUsers)
+    .get('/user', JwtUtil.checkToken, userController.findUser)
+    .post('/users', userController.createUser)
+    .put('/users', JwtUtil.checkToken, userController.updateUser)
+    .delete('/users', JwtUtil.checkToken, userController.deleteUser)
+    // Events
+    .get('/events', eventControler.findAll)
+    .get('/events/:id', eventControler.findOne)
+    .post('/events', JwtUtil.checkToken, eventControler.create)
+    .put('/events', JwtUtil.checkToken, eventControler.update)
+    .delete('/events/:id', JwtUtil.checkToken, eventControler.delete)
+    // Enrollment 
+    .get('/enrollment/', JwtUtil.checkToken, enrollmentController.getEnrollment)
+    .get('/enrollment/:id', JwtUtil.checkToken, enrollmentController.getUserEnrolls)
+    .post('/enrollment', JwtUtil.checkToken, enrollmentController.enroll)
 
 export { routes }

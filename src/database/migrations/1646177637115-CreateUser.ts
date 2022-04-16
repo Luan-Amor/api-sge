@@ -18,6 +18,21 @@ export class CreateUser1646177637115 implements MigrationInterface {
                         isNullable: false
                     },
                     {
+                        name: 'gender',
+                        type: 'varchar',
+                        isNullable: false
+                    },
+                    {
+                        name: 'city',
+                        type: 'varchar',
+                        isNullable: false
+                    },
+                    {
+                        name: 'state',
+                        type: 'varchar',
+                        isNullable: false
+                    },
+                    {
                         name: 'email',
                         type: 'varchar',
                         isNullable: false,
@@ -29,9 +44,19 @@ export class CreateUser1646177637115 implements MigrationInterface {
                         isNullable: false
                     },
                     {
+                        name: 'perfil',
+                        type: 'varchar',
+                        isNullable: false
+                    },
+                    {
                         name: 'created_at',
                         type: 'timestamp',
                         default: 'now()'
+                    },
+                    {
+                        name: 'deleted_at',
+                        type: 'timestamp', 
+                        isNullable: true
                     }
                 ]
             })

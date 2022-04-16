@@ -17,7 +17,7 @@ export class EnrollmentRepository extends Repository<Enrollment> {
         .getMany();
     }
 
-    findByeVENTId(id: string){
+    findByEventId(id: string){
     
     }
 }

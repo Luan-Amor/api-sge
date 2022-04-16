@@ -1,5 +1,4 @@
-import { Enrollment } from "../models/Enrollment";
-import { getCustomRepository, getRepository, Repository } from "typeorm";
+import { getCustomRepository } from "typeorm";
 import { EnrollmentRepository } from "../repository/EnrollmentRepository";
 
 type EnrollmentId = {

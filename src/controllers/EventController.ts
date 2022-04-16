@@ -25,7 +25,8 @@ export class EventController {
 
     async create(request: Request, response: Response){
         const service = new EventService();
-        const {name, description, ticket_price, owner_id} = request.body;
+        const owner_id = request.headers.userId;
+        const {name, description, ticket_price } = request.body;
 
         const event = await service.create({name, description, ticket_price, owner_id});
 

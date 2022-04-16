@@ -21,6 +21,11 @@ export class CreateEnrollment1646177720459 implements MigrationInterface {
                         default: false
                     },
                     {
+                        name: 'present',
+                        type: 'boolean',
+                        default: false
+                    },
+                    {
                         name: 'created_at',
                         type: 'timestamp',
                         default: 'now()'

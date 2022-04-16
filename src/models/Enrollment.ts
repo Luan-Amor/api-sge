@@ -22,6 +22,9 @@ export class Enrollment {
     @Column()
     paid: boolean;
 
+    @Column()
+    present: boolean;
+
     @CreateDateColumn()
     created_at: Date;
 
