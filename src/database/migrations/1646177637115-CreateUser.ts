@@ -18,9 +18,15 @@ export class CreateUser1646177637115 implements MigrationInterface {
                         isNullable: false
                     },
                     {
+                        name: 'cpfCnpj',
+                        type: 'varchar',
+                        isNullable: false,
+                        isUnique: true
+                    },
+                    {
                         name: 'gender',
                         type: 'varchar',
-                        isNullable: false
+                        isNullable: true
                     },
                     {
                         name: 'city',
@@ -40,11 +46,6 @@ export class CreateUser1646177637115 implements MigrationInterface {
                     },
                     {
                         name: 'password',
-                        type: 'varchar',
-                        isNullable: false
-                    },
-                    {
-                        name: 'perfil',
                         type: 'varchar',
                         isNullable: false
                     },

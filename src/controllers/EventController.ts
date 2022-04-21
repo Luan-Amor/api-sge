@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { EventService } from "../services/EventService";
-
+import { CreateEventRequest, EventDto, UpdateEventRequest} from '../dto/EventDto';
 
 export class EventController {
 
@@ -26,9 +26,10 @@ export class EventController {
     async create(request: Request, response: Response){
         const service = new EventService();
         const owner_id = request.headers.userId;
-        const {name, description, ticket_price } = request.body;
+        const dto: CreateEventRequest  = request.body;
+        dto.owner_id = owner_id.toString();
 
-        const event = await service.create({name, description, ticket_price, owner_id});
+        const event = await service.create(dto);
 
         if(event instanceof Error){
             return response.status(404).json(event.message)
@@ -39,9 +40,9 @@ export class EventController {
 
     async update(request: Request, response: Response){
         const service = new EventService();
-        const {id, name, description, ticket_price} = request.body;
+        const dto: UpdateEventRequest = request.body;
 
-        const result = await service.update({id, name, description, ticket_price});
+        const result = await service.update(dto);
 
         if(result instanceof Error){
             return response.status(404).json(result.message);

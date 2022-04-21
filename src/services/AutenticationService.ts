@@ -17,6 +17,9 @@ export class AutenticationService {
         if (!user) {
             return new Error('User or password incorrect.')
         }
+        if (user.deleted_at) {
+            return new Error('User is inactive.')
+        }
         const pass = bcrypt.compareSync(password, user.password);
 
         if (!pass) {

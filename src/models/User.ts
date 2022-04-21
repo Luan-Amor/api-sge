@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from 'uuid';
+import { Perfil } from './Perfil';
 
 @Entity('user')
 export class User {
@@ -12,6 +13,9 @@ export class User {
 
     @Column()
     email: string;
+
+    @Column()
+    cpfCnpj: string;
     
     @Column()
     password: string;
@@ -25,8 +29,9 @@ export class User {
     @Column()
     city: string;
 
-    @Column()
-    perfil: string = 'COMUM';
+    @ManyToMany(() => Perfil)
+    @JoinTable()
+    perfil: Perfil[];
     
     @CreateDateColumn()
     created_at: Date;

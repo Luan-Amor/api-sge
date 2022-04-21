@@ -2,6 +2,7 @@ import { User } from "../models/User";
 import { getRepository, Repository, IsNull } from "typeorm";
 import bcrypt from 'bcryptjs';
 import { createUserRequest, UserDto, UpdateUserRequest } from '../dto/UserDto';
+import { PerfilUser } from "../config/PerfilUser";
 
 
 export default class UserService {
@@ -23,7 +24,7 @@ export default class UserService {
     }
 
     async create(dto: createUserRequest){
-        const { email, password } = dto;
+        const { email, password, cpfCnpj } = dto;
         
         const usr = await this.repository.findOne({email});
         if(usr){
@@ -36,6 +37,14 @@ export default class UserService {
         dto.password = this.generatePassword(password);
 
         const user = this.repository.create(dto);
+
+        if(cpfCnpj){
+            if(cpfCnpj.length <= 14){
+                user.perfil = [PerfilUser.COMUM];
+            }else{
+                user.perfil = [PerfilUser.COMUM, PerfilUser.ENTERPRISE];
+            }
+        }
 
         await this.repository.save(user);
 
@@ -90,6 +99,7 @@ export default class UserService {
         const dto: UserDto = {
             name : user?.name,
             email : user?.email,
+            cpfCnpj: user?.cpfCnpj,
             gender : user?.gender,
             state : user?.state,
             city : user?.city

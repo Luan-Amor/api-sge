@@ -36,10 +36,10 @@ export class Event {
     videos: Video[];
     
     @CreateDateColumn()
-    start_event: Date;
+    start_event_date: Date;
 
     @CreateDateColumn()
-    end_event: Date;
+    end_event_date: Date;
 
     @CreateDateColumn()
     created_at: Date;

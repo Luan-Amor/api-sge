@@ -1,6 +1,7 @@
 export interface createUserRequest {
     name: string;
     email: string;
+    cpfCnpj: string;
     password: string;
     gender?: string;
     state?: string;
@@ -10,6 +11,7 @@ export interface createUserRequest {
 export interface UserDto {
     name?: string;
     email?: string;
+    cpfCnpj?: string;
     gender?: string;
     state?: string;
     city?: string;

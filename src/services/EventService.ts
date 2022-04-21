@@ -1,19 +1,7 @@
 import { Event } from "../models/Event";
 import { getRepository, Repository } from "typeorm";
 import { User } from "../models/User";
-
-type CreateEventRequest  = {
-    name: string;
-    description: string;
-    ticket_price: number;
-    owner_id: any;
-}
-type UpdateEventRequest  = {
-    id: string;
-    name: string;
-    description: string;
-    ticket_price: number;
-}
+import { CreateEventRequest, EventDto, UpdateEventRequest} from '../dto/EventDto';
 
 export class EventService {
 
@@ -23,33 +11,32 @@ export class EventService {
         this.repository = getRepository(Event);
     }
 
-    async create(body: CreateEventRequest): Promise<Event | Error>{
-        const { name, description, ticket_price, owner_id } = body;
+    async create(dto: CreateEventRequest): Promise<EventDto | Error>{
         const repoUser = getRepository(User);
 
-        if(!repoUser.findOne({id: owner_id})){
+        if(await !repoUser.findOne({id: dto.owner_id})){
             return new Error('User not found.');
         }
 
-        const event = this.repository.create({ name, description, ticket_price, owner_id });
+        const event = this.repository.create(dto);
 
         await this.repository.save(event);
 
-        return event;
+        return this.eventToDto(event);
     }
 
     async getAll(){
         const events = await this.repository.find();
-        return events;
+        return events.map(event => this.eventToDto(event));
     }
+
     async getOne(id: string){
         const event = await this.repository.findOne(id);
         if(!event){
             return new Error('Event not found.');
         }
 
-        return event;
-
+        return this.eventToDto(event);
     }
 
     async delete(id: string){
@@ -62,20 +49,38 @@ export class EventService {
         await this.repository.delete(id);
     }
 
-    async update(body: UpdateEventRequest){
-        const { id, name, description, ticket_price } = body;
-        const event = await this.repository.findOne(id);
+    async update(dto: UpdateEventRequest){
+        const event = await this.repository.findOne(dto.id);
 
         if(!event){
             return new Error('event does not exists');
         }
 
-        event.name = name ? name : event.name;
-        event.description = description ? description : event.description;
-        event.ticket_price = ticket_price ? ticket_price : event.ticket_price;
+        event.name = dto.name ? dto.name : event.name;
+        event.description = dto.description ? dto.description : event.description;
+        event.ticket_price = dto.ticket_price ? dto.ticket_price : event.ticket_price;
+        event.speaker = dto.speaker ? dto.speaker : event.speaker;
+        event.spots = dto.spots ? dto.spots : event.spots;
+        event.start_event_date = dto.start_event_date ? dto.start_event_date : event.start_event_date;
+        event.end_event_date = dto.end_event_date ? dto.end_event_date : event.end_event_date;
 
         await this.repository.save(event);
 
-        return event;
+        return this.eventToDto(event);
+    }
+
+    private eventToDto(event: Event): EventDto{
+        const dto: EventDto = {
+            id: event.id,
+            name: event.name,
+            description: event?.description,
+            speaker: event?.speaker,
+            spots: event?.spots,
+            ticket_price: event?.ticket_price,
+            videos: event?.videos,
+            start_event_date: event?.start_event_date,
+            end_event_date: event?.end_event_date
+        }
+        return dto;
     }
 }

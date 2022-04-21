@@ -52,7 +52,8 @@ export class CreateEvent1646177644657 implements MigrationInterface {
                     },
                     {
                         name: 'deleted_at',
-                        type: 'timestamp'
+                        type: 'timestamp',
+                        isNullable: true
                     }
                 ],
                 foreignKeys: [
