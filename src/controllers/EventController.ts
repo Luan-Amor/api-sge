@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { EventService } from "../services/EventService";
 import { CreateEventRequest, EventDto, UpdateEventRequest} from '../dto/EventDto';
+import { Video } from "../models/Video";
 
 export class EventController {
 
@@ -63,4 +64,26 @@ export class EventController {
 
         return response.status(204).end();
     };
+
+    async addVideo(request: Request, response: Response){
+        const video: Video = request.body;
+        const service = new EventService();
+        await service.addVideo('',video);
+    }
+    async updateVideo(request: Request, response: Response){
+        const video: Video = request.body;
+        const service = new EventService();
+        await service.updateVideo(video);
+    }
+    async deleteVideo(request: Request, response: Response){
+        const {idVideo} = request.params;
+        const service = new EventService();
+        const result = await service.deleteVideo(idVideo);
+
+        if(result instanceof Error){
+            return response.status(404).json(result.message);
+        }
+
+        response.status(204).end();
+    }
 }

@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, ManyToMany, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from 'uuid';
+import { Event } from "./Event";
 
 @Entity('video')
 export class Video {

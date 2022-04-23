@@ -20,10 +20,12 @@ export class video1649116244422 implements MigrationInterface {
                     {
                         name: 'description',
                         type: 'varchar',
+                        isNullable: true
                     },
                     {
                         name: 'url',
                         type: 'varchar',
+                        isNullable: false
                     }
                 ]
             })

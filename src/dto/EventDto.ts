@@ -19,8 +19,6 @@ export interface UpdateEventRequest {
     speaker: string;
     ticket_price: number;
     spots: number;
-    owner_id: string;
-    videos: Video[];
     start_event_date: Date;
     end_event_date: Date;
 }

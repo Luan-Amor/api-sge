@@ -31,7 +31,7 @@ export class Event {
     @JoinColumn({ name: 'owner_id'})
     owner: User;
 
-    @ManyToMany(() => Video)
+    @ManyToMany(() => Video, {onDelete: "CASCADE", cascade: true})
     @JoinTable()
     videos: Video[];
     

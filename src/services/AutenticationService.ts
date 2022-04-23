@@ -2,6 +2,7 @@ import { User } from "../models/User";
 import { getRepository, Repository } from "typeorm";
 import bcrypt from 'bcryptjs';
 import { JwtUtil } from "../config/JwtUtil";
+import { blacklist } from "../redis/Blacklist";
 
 export class AutenticationService {
 
@@ -13,7 +14,8 @@ export class AutenticationService {
 
     async login(email, password) {
 
-        const user = await this.repository.findOne({ email });
+        const user = await this.repository.findOne({ email }).catch(err => null);
+
         if (!user) {
             return new Error('User or password incorrect.')
         }
@@ -40,5 +42,10 @@ export class AutenticationService {
         }
         
         return tokenDto;
+    }
+
+    async logout(token){
+        const result = await blacklist.addToken(token);
+        return result;
     }
 }

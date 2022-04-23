@@ -5,26 +5,26 @@ export class CreateEventVideo1649800861099 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: 'event_video',
+                name: 'event_videos_video',
                 columns: [
                     {
-                        name: 'video_id',
+                        name: 'videoId',
                         type: 'uuid'
                     },
                     {
-                        name: 'event_id',
+                        name: 'eventId',
                         type: 'uuid'
                     }
                 ],
                 foreignKeys: [
                     {
                         name: 'fk_video_event',
-                        columnNames: ['video_id'],
+                        columnNames: ['videoId'],
                         referencedTableName: 'video',
                         referencedColumnNames: ['id']
                     },                    {
                         name: 'fk_event_video',
-                        columnNames: ['event_id'],
+                        columnNames: ['eventId'],
                         referencedTableName: 'event',
                         referencedColumnNames: ['id']
                     }
@@ -34,7 +34,7 @@ export class CreateEventVideo1649800861099 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('event_video');
+        await queryRunner.dropTable('event_videos_video');
     }
 
 }
