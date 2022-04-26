@@ -4,12 +4,12 @@ import { Enrollment } from "../models/Enrollment";
 @EntityRepository(Enrollment)
 export class EnrollmentRepository extends Repository<Enrollment> {
 
-    findById(user_id, event_id){
-        return this.findOne({ user_id, event_id });
+    async findById(user_id, event_id){
+        return await this.findOne({ user_id, event_id });
     }
 
-    findByUserId(id: string){
-        return this.createQueryBuilder('enrollment')
+    async findByUserId(id: string){
+        return await this.createQueryBuilder('enrollment')
         .leftJoinAndSelect('enrollment.user', 'user')
         .leftJoinAndSelect('enrollment.event', 'event')
         .where('user.id = :userId', {userId: id})

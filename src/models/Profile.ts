@@ -1,16 +1,16 @@
 import { Column, Entity, PrimaryColumn } from "typeorm";
 
-@Entity('perfil')
-export class Perfil {
+@Entity('profile')
+export class Profile {
 
     @PrimaryColumn()
     id: number;
 
     @Column()
-    perfil: string;
+    profile: string;
 
-    constructor(id: number, perfil: string){
+    constructor(id: number, profile: string){
         this.id = id;
-        this.perfil = perfil;
+        this.profile = profile;
     }
 }

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { EventService } from "../services/EventService";
-import { CreateEventRequest, EventDto, UpdateEventRequest} from '../dto/EventDto';
+import { CreateEventRequest, UpdateEventRequest, AddVideoDto} from '../dto/EventDto';
 import { Video } from "../models/Video";
 
 export class EventController {
@@ -15,7 +15,7 @@ export class EventController {
         const service = new EventService();
         const { id } = request.params;
 
-        const result = await service.getOne(id);
+        const result = await service.getOne(parseInt(id));
 
         if(result instanceof Error){
             return response.status(404).json(result.message);
@@ -42,8 +42,9 @@ export class EventController {
     async update(request: Request, response: Response){
         const service = new EventService();
         const dto: UpdateEventRequest = request.body;
+        const ownerId = request.headers.userId;
 
-        const result = await service.update(dto);
+        const result = await service.update(ownerId.toString(), dto);
 
         if(result instanceof Error){
             return response.status(404).json(result.message);
@@ -55,8 +56,8 @@ export class EventController {
     async delete(request: Request, response: Response){
         const service = new EventService();
         const { id } = request.params;
-
-        const result = await service.delete(id);
+        const ownerId = request.headers.userId;
+        const result = await service.delete(parseInt(id), ownerId.toString());
 
         if(result instanceof Error){
             return response.status(404).json(result.message);
@@ -66,15 +67,23 @@ export class EventController {
     };
 
     async addVideo(request: Request, response: Response){
-        const video: Video = request.body;
+        const dto: AddVideoDto = request.body;
         const service = new EventService();
-        await service.addVideo('',video);
-    }
+        const result = await service.addVideo(dto);
+
+        if(result instanceof Error){
+            response.status(404).json(result.message)
+        }
+
+        return response.json(result);
+    };
+
     async updateVideo(request: Request, response: Response){
         const video: Video = request.body;
         const service = new EventService();
         await service.updateVideo(video);
     }
+
     async deleteVideo(request: Request, response: Response){
         const {idVideo} = request.params;
         const service = new EventService();

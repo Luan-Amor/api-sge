@@ -1,12 +1,10 @@
-import { Column, Entity, ManyToMany, PrimaryColumn } from "typeorm";
-import { v4 as uuid } from 'uuid';
-import { Event } from "./Event";
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('video')
 export class Video {
 
-    @PrimaryColumn()
-    id: string;
+    @PrimaryGeneratedColumn()
+    id: number;
 
     @Column()
     name: string;
@@ -17,9 +15,4 @@ export class Video {
     @Column()
     url: string;
 
-    constructor(){
-        if(!this.id){
-            this.id = uuid();
-        }
-    }
 }

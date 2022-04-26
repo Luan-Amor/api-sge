@@ -9,8 +9,10 @@ export class video1649116244422 implements MigrationInterface {
                 columns: [
                     {
                         name: 'id',
-                        type: 'uuid',
-                        isPrimary: true
+                        type: 'int',
+                        isPrimary: true,
+                        isGenerated: true,
+                        generationStrategy: "identity"
                     },
                     {
                         name: 'name',

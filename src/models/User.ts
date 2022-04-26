@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from 'uuid';
-import { Perfil } from './Perfil';
+import { Profile } from './Profile';
 
 @Entity('user')
 export class User {
@@ -29,9 +29,9 @@ export class User {
     @Column()
     city: string;
 
-    @ManyToMany(() => Perfil)
+    @ManyToMany(() => Profile)
     @JoinTable()
-    perfil: Perfil[];
+    profile: Profile[];
     
     @CreateDateColumn()
     created_at: Date;

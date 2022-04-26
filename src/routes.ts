@@ -19,22 +19,23 @@ const routes = Router();
     .post('/logout', JwtUtil.checkToken, authenticationController.logout)
     // User
     .get('/users', userController.findUsers)
-    .get('/user', JwtUtil.checkToken, Authorization.isComun, userController.findUser)
     .post('/users', userController.createUser)
-    .put('/users', JwtUtil.checkToken, userController.updateUser)
-    .delete('/users', JwtUtil.checkToken, userController.deleteUser)
+    .get('/user', JwtUtil.checkToken, Authorization.isComun, Authorization.isEnterprise, userController.findUser)
+    .put('/users', JwtUtil.checkToken, Authorization.isComun, Authorization.isEnterprise, userController.updateUser)
+    .delete('/users', JwtUtil.checkToken, Authorization.isComun, Authorization.isEnterprise, userController.deleteUser)
     // Events
     .get('/events', eventController.findAll)
     .get('/events/:id', eventController.findOne)
     .post('/events', JwtUtil.checkToken, Authorization.isEnterprise, eventController.create)
     .put('/events', JwtUtil.checkToken, Authorization.isEnterprise, eventController.update)
-    .delete('/events/:id', JwtUtil.checkToken,Authorization.isEnterprise, eventController.delete)
+    .delete('/events/:id', JwtUtil.checkToken, Authorization.isEnterprise, eventController.delete)
     // Events - Videos
-    .delete('/events/videos/:idVideo', JwtUtil.checkToken, eventController.deleteVideo )
+    .post('/events/videos', JwtUtil.checkToken, Authorization.isEnterprise, eventController.addVideo )
+    .delete('/events/videos/:idVideo', JwtUtil.checkToken, Authorization.isEnterprise, eventController.deleteVideo )
     // Enrollment 
-    .get('/enrollment/', JwtUtil.checkToken, Authorization.isComun, enrollmentController.getEnrollment)
-    .get('/enrollment/:id', JwtUtil.checkToken, Authorization.isComun, enrollmentController.getUserEnrolls)
-    .post('/enrollment', JwtUtil.checkToken, Authorization.isComun, enrollmentController.enroll)
+    .get('/enrollments/', JwtUtil.checkToken, Authorization.isComun, enrollmentController.getUserEnrolls)
+    .post('/enrollments/:idEvent', JwtUtil.checkToken, Authorization.isComun, enrollmentController.enroll)
+    .post('/enrollments/', JwtUtil.checkToken, Authorization.isEnterprise, enrollmentController.validate)
     // Admin
 
 export { routes }

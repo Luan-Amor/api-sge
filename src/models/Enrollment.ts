@@ -9,7 +9,7 @@ export class Enrollment {
     user_id: string;
 
     @PrimaryColumn()
-    event_id: string;
+    event_id: number;
 
     @ManyToOne(() => User, user => user.id)
     @JoinColumn({ name: 'user_id'})
@@ -23,7 +23,7 @@ export class Enrollment {
     paid: boolean;
 
     @Column()
-    present: boolean;
+    arrived_at: Date;
 
     @CreateDateColumn()
     created_at: Date;

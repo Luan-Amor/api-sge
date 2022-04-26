@@ -1,13 +1,12 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
-import { v4 as uuid } from 'uuid';
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from './User'
 import { Video } from "./Video";
 
 @Entity('event')
 export class Event {
 
-    @PrimaryColumn()
-    id: string;
+    @PrimaryGeneratedColumn()
+    id: number;
 
     @Column()
     name: string;
@@ -47,9 +46,4 @@ export class Event {
     @CreateDateColumn()
     deleted_at: Date;
 
-    constructor(){
-        if(!this.id){
-            this.id = uuid();
-        }
-    }
 }

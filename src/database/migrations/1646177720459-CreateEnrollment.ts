@@ -13,7 +13,7 @@ export class CreateEnrollment1646177720459 implements MigrationInterface {
                     },
                     {
                         name: 'event_id',
-                        type: 'uuid'
+                        type: 'int'
                     },
                     {
                         name: 'paid',
@@ -21,9 +21,9 @@ export class CreateEnrollment1646177720459 implements MigrationInterface {
                         default: false
                     },
                     {
-                        name: 'present',
-                        type: 'boolean',
-                        default: false
+                        name: 'arrived_at',
+                        type: 'timestamp',
+                        isNullable: true
                     },
                     {
                         name: 'created_at',

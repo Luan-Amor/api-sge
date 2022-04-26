@@ -1,23 +1,16 @@
-import { getCustomRepository } from "typeorm";
+import { Event } from "../models/Event";
+import { getCustomRepository, getRepository, Repository } from "typeorm";
 import { EnrollmentRepository } from "../repository/EnrollmentRepository";
+import { Enrollment } from "../models/Enrollment";
 
-type EnrollmentId = {
-    user: string;
-    event: string;
-}
 export class EnrollmentService {
 
     private repository: EnrollmentRepository;
+    private repoEvent: Repository<Event>
 
     constructor(){
         this.repository = getCustomRepository(EnrollmentRepository);
-    }
-
-    async getEnrollment(){
-        const enrollment = await this.repository.find({
-            relations: ['user', 'event']
-        });
-        return enrollment;
+        this.repoEvent = getRepository(Event);
     }
 
     async getEventsForUserId(id: string){
@@ -25,13 +18,19 @@ export class EnrollmentService {
         return result;
     }
 
-    async enroll(id: EnrollmentId){
+    async enroll(idUser: string, idEvent: number){
 
-        if(await this.repository.findById(id.user, id.event)){
+        const event: Event = await this.repoEvent.findOne({id: idEvent}).catch(err => null);
+        console.log(event)
+        if(await this.repository.findById(idUser, idEvent)){
             return new Error('User already enrolled for this event.');
         }
+    
+        const enroll = this.repository.create({ user_id: idUser , event_id: idEvent});
 
-        const enroll = this.repository.create(id);
+        if(event?.ticket_price == 0){
+            enroll.paid = true;
+        }
 
         await this.repository.save(enroll);
 
@@ -39,5 +38,29 @@ export class EnrollmentService {
 
     }
 
+    async validateEnroll(idUser: string, idEvent: number){
+        
+        const enroll: Enrollment = await this.repository.findById(idUser, idEvent).catch(err => null);
+
+        if(!enroll){
+            return new Error('O participante não está inscrito no evento.');
+        }
+
+        if(enroll.arrived_at){
+            return new Error('O participante já entrou no evento.');
+        }
+
+        if(!enroll.paid){
+            return new Error('O pagamento não foi encontrado.');
+        }
+
+        enroll.arrived_at = new Date();
+        try {
+            await this.repository.save(enroll);
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
 
 }

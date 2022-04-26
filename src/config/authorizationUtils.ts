@@ -10,7 +10,7 @@ const Authorization = {
     async isComun(req, res, next){
         const id = req.headers.userId;
 
-        if(await isPerfil(id, COMUM)){
+        if(await isProfile(id, COMUM)){
             next(); 
         }else{
             res.status(403).json({ message: 'This profile does not have permission for this functionality.' });
@@ -19,7 +19,7 @@ const Authorization = {
     async isEnterprise(req, res, next){
         const id = req.headers.userId;
 
-        if(await isPerfil(id, ENTERPRISE)){
+        if(await isProfile(id, ENTERPRISE)){
             next(); 
         }else{
             res.status(403).json({ message: 'This profile does not have permission for this functionality.' });
@@ -28,7 +28,7 @@ const Authorization = {
     async isAdmin(req, res, next){
         const id = req.headers.userId;
 
-        if(await isPerfil(id, ADMIN)){
+        if(await isProfile(id, ADMIN)){
             next(); 
         }else{
             res.status(403).json({ message: 'This profile does not have permission for this functionality.' });
@@ -37,14 +37,14 @@ const Authorization = {
 
 }
 
-async function isPerfil(id: string, idPerfil: number) {
+async function isProfile(id: string, idProfile: number) {
     const repository: Repository<User> = getRepository(User);
     const user = await repository.createQueryBuilder("user")
-    .leftJoinAndSelect("user.perfil", "perfil")
+    .leftJoinAndSelect("user.profile", "profile")
     .where({ id })
     .getOne();
     
-    return user.perfil.some(p => p.id == idPerfil);
+    return user.profile.some(p => p.id == idProfile);
 }
 
 export default Authorization;

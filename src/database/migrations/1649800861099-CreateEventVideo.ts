@@ -9,11 +9,11 @@ export class CreateEventVideo1649800861099 implements MigrationInterface {
                 columns: [
                     {
                         name: 'videoId',
-                        type: 'uuid'
+                        type: 'int'
                     },
                     {
                         name: 'eventId',
-                        type: 'uuid'
+                        type: 'int'
                     }
                 ],
                 foreignKeys: [

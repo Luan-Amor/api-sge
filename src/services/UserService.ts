@@ -2,7 +2,7 @@ import { User } from "../models/User";
 import { getRepository, Repository, IsNull } from "typeorm";
 import bcrypt from 'bcryptjs';
 import { createUserRequest, UserDto, UpdateUserRequest } from '../dto/UserDto';
-import { PerfilUser } from "../config/PerfilUser";
+import { ProfileUser } from "../config/ProfileUser";
 
 
 export default class UserService {
@@ -35,20 +35,19 @@ export default class UserService {
         }
 
         dto.password = this.generatePassword(password);
-
         const user = this.repository.create(dto);
-
+        
         if(cpfCnpj){
             if(cpfCnpj.length <= 14){
-                user.perfil = [PerfilUser.COMUM];
+                user.profile = [ProfileUser.COMUM];
             }else{
-                user.perfil = [PerfilUser.COMUM, PerfilUser.ENTERPRISE];
+                user.profile = [ProfileUser.COMUM, ProfileUser.ENTERPRISE];
             }
         }
 
-        await this.repository.save(user);
+        const result = await this.repository.save(user).catch(err => null);
 
-        return this.userToDto(user);
+        return this.userToDto(result);
     }
 
     async getOne(id){

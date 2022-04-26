@@ -3,25 +3,23 @@ import { EnrollmentService } from "../services/EnrollmentService";
 
 export class EnrollmentController {
 
-    async getEnrollment(request: Request, response: Response) {
-        const service = new EnrollmentService();
-        const result = await service.getEnrollment();
-
-        return response.json(result);
-    }
-
     async getUserEnrolls(request: Request, response: Response) {
         const service = new EnrollmentService();
-        const { id } = request.params;
-        const result = await service.getEventsForUserId(id);
+        const id = request.headers.userId;
+        const result = await service.getEventsForUserId(id.toString());
+
+        if(result instanceof Error){
+            return response.status(404).json(result.message)
+        }
 
         return response.json(result);
     }
 
     async enroll(request: Request, response: Response) {
         const service = new EnrollmentService();
-        const { user, event } = request.body;
-        const result = await service.enroll({ user, event });
+        const idUser = request.headers.userId;
+        const { idEvent } = request.params;
+        const result = await service.enroll(idUser.toString(), parseInt(idEvent));
         
         if(result instanceof Error){
             return response.status(404).json(result.message)
@@ -29,4 +27,17 @@ export class EnrollmentController {
 
         return response.json(result);
     }
+
+    async validate(request: Request, response: Response){
+        const service = new EnrollmentService();
+        const { idUser, idEvent } = request.body;
+        const result = await service.validateEnroll(idUser,  idEvent);
+
+        if(result instanceof Error){
+            return response.status(404).json(result.message)
+        }
+
+        return response.json(result);
+    }
+    
 }

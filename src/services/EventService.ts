@@ -1,6 +1,6 @@
 import { Event } from "../models/Event";
-import { getRepository, Repository } from "typeorm";
-import { CreateEventRequest, EventDto, UpdateEventRequest} from '../dto/EventDto';
+import { getRepository, IsNull, Repository } from "typeorm";
+import { AddVideoDto, CreateEventRequest, EventDto, UpdateEventRequest} from '../dto/EventDto';
 import { Video } from "../models/Video";
 
 export class EventService {
@@ -30,6 +30,7 @@ export class EventService {
                 await transactionManager.save(event);
             })
         } catch (error) {
+            console.log(error)
             return new Error("Não foi possível criar o evento.")
         }
 
@@ -39,14 +40,20 @@ export class EventService {
     async getAll(){
         const events = await this.repository.createQueryBuilder("event")
         .leftJoinAndSelect("event.videos", "video")
+        .where({
+            deleted_at: IsNull()
+        })
         .getMany();
         return events.map(event => this.eventToDto(event));
     }
 
-    async getOne(id: string){
+    async getOne(id: number){
         const event = await this.repository.createQueryBuilder("event")
         .leftJoinAndSelect("event.videos", "video")
-        .where({ id })
+        .where({ 
+            id,
+            deleted_at: IsNull()
+        })
         .getOne()
         .catch(err => null);
 
@@ -57,18 +64,30 @@ export class EventService {
         return this.eventToDto(event);
     }
 
-    async delete(id: string){
-        const event = await this.repository.findOne(id).catch(err => console.log(err));
+    async delete(id: number, idOwner: string){
+        const event = await this.repository.findOne({
+            where: {
+                id,
+                owner_id: idOwner
+            }
+        }).catch(err => console.log(err));
 
         if(!event){
             return new Error('Event not found.');
         }
 
-        await this.repository.delete(id);
+        event.deleted_at = new Date(); 
+
+        await this.repository.save(event);
     }
 
-    async update(dto: UpdateEventRequest){
-        const event = await this.repository.findOne(dto.id).catch(err => null);
+    async update(ownerId: string, dto: UpdateEventRequest){
+        const event = await this.repository.findOne({
+            where: {
+                id: dto.id,
+                owner_id: ownerId
+            }
+        }).catch(err => null);
 
         if(!event){
             return new Error('event does not exists');
@@ -87,8 +106,28 @@ export class EventService {
         return this.eventToDto(event);
     }
 
-    async addVideo(idEvent: string, video: Video){
+    async addVideo(dto: AddVideoDto){
+        const { idEvent, name, description, url } = dto;
 
+        const event = await this.repository.findOne(idEvent).catch(err => null);
+
+        if(!event){
+            return new Error("Event not found.");
+        }
+        const video = this.repoVideo.create({name, description, url});
+
+        event.videos = video;
+        
+        try {
+            await this.repository.manager.transaction( async transactionManager =>{
+                await transactionManager.save(video);
+                await transactionManager.save(event);
+            })
+        } catch (error) {
+            return new Error("Não foi possível criar o evento.")
+        }
+
+        return this.eventToDto(event);
     }
 
     async updateVideo(dto: Video){
@@ -97,8 +136,9 @@ export class EventService {
         if(!video){
             return new Error('Video not found.');
         }
+        const update = { ...dto, video }
 
-        await this.repoVideo.save(dto);
+        await this.repoVideo.save(update);
 
         return dto;
     }
