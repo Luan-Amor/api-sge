@@ -25,6 +25,7 @@ const routes = Router();
     .delete('/users', JwtUtil.checkToken, Authorization.isComun, Authorization.isEnterprise, userController.deleteUser)
     // Events
     .get('/events', eventController.findAll)
+    .get('/events/users', JwtUtil.checkToken, Authorization.isEnterprise, eventController.findEventByUser)
     .get('/events/:id', eventController.findOne)
     .post('/events', JwtUtil.checkToken, Authorization.isEnterprise, eventController.create)
     .put('/events', JwtUtil.checkToken, Authorization.isEnterprise, eventController.update)

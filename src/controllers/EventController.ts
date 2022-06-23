@@ -24,6 +24,14 @@ export class EventController {
         return response.json(result);
     };
 
+    async findEventByUser(request: Request, response: Response){
+        const service = new EventService();
+        const ownerId = request.headers.userId;
+        const events = await service.findEventsByUser(ownerId.toString());
+        
+        return response.send(events);
+    }
+
     async create(request: Request, response: Response){
         const service = new EventService();
         const owner_id = request.headers.userId;

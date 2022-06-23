@@ -14,7 +14,10 @@ export class AutenticationService {
 
     async login(email, password) {
 
-        const user = await this.repository.findOne({ email }).catch(err => null);
+        const user = await this.repository.createQueryBuilder("user")
+        .leftJoinAndSelect("user.profile", "profile")
+        .where({ email })
+        .getOne();
 
         if (!user) {
             return new Error('User or password incorrect.')
@@ -31,15 +34,13 @@ export class AutenticationService {
         const tokenJWT = JwtUtil.generateToken(user.id);
 
         const tokenDto =  
-        {
-            success: true,
-            user: {
+            {
                 id: user.id,
                 login: user.email,
-                nome: user.name,
+                name: user.name,
+                profile: user.profile.map(p => p.profile),
                 token: tokenJWT
             }
-        }
         
         return tokenDto;
     }
