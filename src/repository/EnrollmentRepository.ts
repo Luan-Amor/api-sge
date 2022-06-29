@@ -17,7 +17,13 @@ export class EnrollmentRepository extends Repository<Enrollment> {
         .getMany();
     }
 
-    findByEventId(id: string){
-    
+    async getParticipantsByIdEvent(userId: string, eventId: number){
+        return await this.createQueryBuilder('enrollment')
+        .leftJoinAndSelect('enrollment.user', 'user')
+        .leftJoinAndSelect('enrollment.event', 'event')
+        .where('event.id = :eventId', { eventId })
+        .andWhere('event.owner_id = :userId', { userId })
+        .select(['enrollment', 'user.name', 'user.gender', 'user.state', 'user.city'])
+        .getMany();
     }
 }

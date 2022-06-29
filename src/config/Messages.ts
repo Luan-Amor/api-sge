@@ -5,6 +5,8 @@ export class Messages {
     static TOKEN_EXPIRED_ERROR = 'Token expirado';
     static TOKEN_INVALID = 'Token Inválido';
 
+    static PERMISSION_DENY = 'Este perfil não possui acesso a essa funcionalidade.';
+
     static OPERATION_INVALID = 'Não foi possível concluir a operação.';
     static USER_NOT_FOUND = 'Não foi possível encontrar o usuário informado';
     static EVENT_NOT_FOUND = 'Não foi possível encontrar o evento informado';

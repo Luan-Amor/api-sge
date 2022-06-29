@@ -15,7 +15,6 @@ export class AutenticationService {
     async login(email, password) {
 
         const user = await this.repository.createQueryBuilder("user")
-        .leftJoinAndSelect("user.profile", "profile")
         .where({ email })
         .getOne();
 
@@ -38,7 +37,7 @@ export class AutenticationService {
                 id: user.id,
                 login: user.email,
                 name: user.name,
-                profile: user.profile.map(p => p.profile),
+                profile: user.profile,
                 token: tokenJWT
             }
         

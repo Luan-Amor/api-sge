@@ -39,5 +39,18 @@ export class EnrollmentController {
 
         return response.json(result);
     }
+
+    async getParticipantsByIdEvent(request: Request, response: Response){
+        const service = new EnrollmentService();
+        const id = request.headers.userId;
+        const { eventId } = request.params;
+        const result = await service.getParticipantsByEventId(id.toString(), parseInt(eventId));
+
+        if(result instanceof Error){
+            return response.status(404).json(result.message)
+        }
+
+        return response.json(result);
+    }
     
 }

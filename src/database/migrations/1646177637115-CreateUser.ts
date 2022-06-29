@@ -1,4 +1,4 @@
-import {MigrationInterface, QueryRunner, Table} from "typeorm";
+import {MigrationInterface, QueryRunner, Table, TableForeignKey} from "typeorm";
 
 export class CreateUser1646177637115 implements MigrationInterface {
 
@@ -51,6 +51,11 @@ export class CreateUser1646177637115 implements MigrationInterface {
                         isNullable: false
                     },
                     {
+                        name: 'profile',
+                        type: 'varchar',
+                        isNullable: false
+                    },
+                    {
                         name: 'created_at',
                         type: 'timestamp',
                         default: 'now()'
@@ -62,7 +67,7 @@ export class CreateUser1646177637115 implements MigrationInterface {
                     }
                 ]
             })
-        )
+        );
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {

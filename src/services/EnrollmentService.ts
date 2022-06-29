@@ -21,7 +21,7 @@ export class EnrollmentService {
     async enroll(idUser: string, idEvent: number){
 
         const event: Event = await this.repoEvent.findOne({id: idEvent}).catch(err => null);
-        console.log(event)
+
         if(await this.repository.findById(idUser, idEvent)){
             return new Error('User already enrolled for this event.');
         }
@@ -61,6 +61,11 @@ export class EnrollmentService {
             console.log(error)
         }
 
+    }
+
+    async getParticipantsByEventId(userId: string, idEvent: number){
+        const number = await this.repository.getParticipantsByIdEvent(userId, idEvent);
+        return number;
     }
 
 }

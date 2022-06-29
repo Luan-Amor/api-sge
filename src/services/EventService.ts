@@ -2,7 +2,7 @@ import { Event } from "../models/Event";
 import { getRepository, IsNull, Repository } from "typeorm";
 import { AddVideoDto, CreateEventRequest, EventDto, UpdateEventRequest} from '../dto/EventDto';
 import { Video } from "../models/Video";
-import { Messages } from "../config/messages";
+import { Messages } from "../config/Messages";
 
 export class EventService {
 
@@ -97,7 +97,7 @@ export class EventService {
                 id: dto.id,
                 owner_id: ownerId
             }
-        }).catch(err => null);
+        }).catch(err => { console.log(err)});
 
         if(!event){
             return new Error(Messages.EVENT_NOT_FOUND);

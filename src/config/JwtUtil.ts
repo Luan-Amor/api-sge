@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import jwt from 'jsonwebtoken';
 import { blacklist } from "../redis/Blacklist";
-import { Messages } from './messages';
+import { Messages } from './Messages';
 
 export const JwtUtil = {
 

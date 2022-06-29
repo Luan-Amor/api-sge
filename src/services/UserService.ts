@@ -39,13 +39,19 @@ export default class UserService {
         
         if(cpfCnpj){
             if(cpfCnpj.length <= 14){
-                user.profile = [ProfileUser.COMUM];
+                user.profile = ProfileUser.COMUM;
             }else{
-                user.profile = [ProfileUser.COMUM, ProfileUser.ENTERPRISE];
+                user.profile = ProfileUser.ENTERPRISE;
             }
         }
 
-        const result = await this.repository.save(user).catch(err => null);
+        const result = await this.repository.save(user)
+                        .catch(err => { 
+                            if(err.code === '23505'){
+                                throw new Error("CPF ou CNPJ já cadastrado.");
+                            }
+                            return null;
+                        });
 
         return this.userToDto(result);
     }
