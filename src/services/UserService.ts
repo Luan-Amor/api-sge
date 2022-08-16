@@ -79,7 +79,6 @@ export default class UserService {
 
         user.name = dto.name ? dto.name : user.name;
         user.password = dto.password ? this.generatePassword(dto.password) : user.password;
-        user.gender = dto.gender ? dto.gender : user.gender;
         user.state = dto.state ? dto.state : user.state;
         user.city = dto.city ? dto.city : user.city;
 
@@ -102,6 +101,7 @@ export default class UserService {
 
     private userToDto(user: User): UserDto{
         const dto: UserDto = {
+            id: user.id,
             name : user?.name,
             email : user?.email,
             cpfCnpj: user?.cpfCnpj,

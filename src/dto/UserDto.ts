@@ -9,6 +9,7 @@ export interface createUserRequest {
 }
 
 export interface UserDto {
+    id: string
     name?: string;
     email?: string;
     cpfCnpj?: string;
@@ -20,7 +21,6 @@ export interface UserDto {
 export interface UpdateUserRequest {
     name?: string;
     password?: string;
-    gender?: string;
     state?: string;
     city?: string;
 }

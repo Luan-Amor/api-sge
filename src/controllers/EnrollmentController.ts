@@ -30,8 +30,8 @@ export class EnrollmentController {
 
     async validate(request: Request, response: Response){
         const service = new EnrollmentService();
-        const { idUser, idEvent } = request.body;
-        const result = await service.validateEnroll(idUser,  idEvent);
+        const { idUser, idEvent } =  request.params;
+        const result = await service.validateEnroll(idUser,  parseInt(idEvent));
 
         if(result instanceof Error){
             return response.status(404).json(result.message)

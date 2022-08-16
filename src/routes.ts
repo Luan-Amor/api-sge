@@ -17,8 +17,8 @@ const adminController = new AdminController();
 const routes = Router();
 
     //Authentication
-    routes.post('/login', authenticationController.login)
-    .post('/logout', JwtUtil.checkToken, authenticationController.logout)
+    routes
+    .post('/login', authenticationController.login)
     // User
     .get('/users', userController.findUsers)
     .post('/users', userController.createUser)
@@ -39,7 +39,7 @@ const routes = Router();
     .get('/enrollments/events/:eventId',  JwtUtil.checkToken, Authorization.isEnterprise, enrollmentController.getParticipantsByIdEvent)
     .get('/enrollments/', JwtUtil.checkToken, Authorization.isComun, enrollmentController.getUserEnrolls)
     .post('/enrollments/:idEvent', JwtUtil.checkToken, Authorization.isComun, enrollmentController.enroll)
-    .post('/enrollments/', JwtUtil.checkToken, Authorization.isEnterprise, enrollmentController.validate)
+    .put('/enrollments/:idEvent/:idUser', JwtUtil.checkToken, Authorization.isEnterprise, enrollmentController.validate)
     // Admin
     .get('/admin/users',  JwtUtil.checkToken, Authorization.isAdmin, adminController.getAllUsers)
     .patch('/admin/users/active/:userId',  JwtUtil.checkToken, Authorization.isAdmin, adminController.activateUser)
