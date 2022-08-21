@@ -2,9 +2,11 @@
   "name": "api-sge",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
+  "type": "commonjs",
   "scripts": {
     "test": "jest",
+    "start": "npm run build && node dist/server.js",
     "dev": "tsnd --respawn --transpile-only src/server.ts",
     "typeorm": "tsnd ./node_modules/typeorm/cli.js",
     "build": "tsc"
